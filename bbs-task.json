@@ -1,0 +1,27 @@
+[
+  {
+    "name": "${owner}-${appname}-task",
+    "image": "${appimage}",
+    "essential": true,
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/${owner}-${appname}",
+        "awslogs-region": "eu-west-3",
+        "awslogs-stream-prefix": "ecs"
+      }
+    },
+    "portMappings": [
+      {
+        "containerPort": 7990,
+        "hostPort": 7990
+      }
+    ],
+    "tags": [
+      {
+        "key": "Owner",
+        "value": "${owner}-${appname}"
+      }
+    ]
+  }
+]
