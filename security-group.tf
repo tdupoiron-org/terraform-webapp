@@ -4,15 +4,8 @@ resource "aws_security_group" "app_sg" {
   vpc_id = aws_vpc.app_vpc.id
 
   ingress {
-    from_port   = 7990
-    to_port     = 7990
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 7999
-    to_port     = 7999
+    from_port   = "${var.webapp_port}"
+    to_port     = "${var.webapp_port}"
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

@@ -49,7 +49,7 @@ resource "aws_ecs_service" "ecs_service_app" {
   load_balancer {
     target_group_arn = aws_lb_target_group.app_tg.arn
     container_name   = "${var.owner}-${var.webapp_name}-task"
-    container_port   = 7990
+    container_port   = var.webapp_port
   }
 
   tags = {
