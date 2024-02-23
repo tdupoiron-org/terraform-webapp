@@ -18,14 +18,18 @@ variable "ovh_domain" {
   type = string
 }
 
-variable "bbs_subdomain" {
+variable "webapp_subdomain" {
   type = string
 }
 
-variable "bbs_appname" {
+variable "webapp_name" {
   type = string
 }
 
-variable "bbs_appimage" {
+variable "webapp_image" {
   type = string
+}
+
+variable "webapp_port" {
+  type = number
 }

@@ -1,7 +1,7 @@
 # This file creates a security group that allows all inbound and outbound traffic.
-resource "aws_security_group" "bbs_sg" {
-  name   = "${var.owner}-bbs-sg-tf"
-  vpc_id = aws_vpc.bbs_vpc.id
+resource "aws_security_group" "app_sg" {
+  name   = "${var.owner}-app-sg-tf"
+  vpc_id = aws_vpc.app_vpc.id
 
   ingress {
     from_port   = 7990
@@ -40,6 +40,6 @@ resource "aws_security_group" "bbs_sg" {
 
   tags = {
     Owner = var.owner
-    Name  = "${var.owner}-bbs-sg-tf"
+    Name  = "${var.owner}-app-sg-tf"
   }
 }

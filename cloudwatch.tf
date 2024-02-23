@@ -1,5 +1,5 @@
-resource "aws_cloudwatch_log_group" "bbs_log_group" {
-  name              = "/ecs/${var.owner}-${var.bbs_appname}"
+resource "aws_cloudwatch_log_group" "app_log_group" {
+  name              = "/ecs/${var.owner}-${var.webapp_name}"
   retention_in_days = 30
 
   tags = {

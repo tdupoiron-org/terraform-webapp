@@ -1,8 +1,8 @@
-resource "aws_ecs_cluster" "ecs_cluster_bbs" {
-  name = "${var.owner}-ecs-cluster-bbs"
+resource "aws_ecs_cluster" "ecs_cluster_app" {
+  name = "${var.owner}-ecs-cluster-app"
 
   tags = {
-    Name  = "${var.owner}-ecs-cluster-bbs"
+    Name  = "${var.owner}-ecs-cluster-app"
     Owner = "${var.owner}"
   }
 }
@@ -33,27 +33,27 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-resource "aws_ecs_service" "ecs_service_bbs" {
-  name            = "${var.owner}-ecs-service-bbs"
-  cluster         = aws_ecs_cluster.ecs_cluster_bbs.id
-  task_definition = aws_ecs_task_definition.ecs_bbs_task_definition.arn
+resource "aws_ecs_service" "ecs_service_app" {
+  name            = "${var.owner}-ecs-service-app"
+  cluster         = aws_ecs_cluster.ecs_cluster_app.id
+  task_definition = aws_ecs_task_definition.ecs_app_task_definition.arn
   launch_type     = "FARGATE"
   desired_count   = 1
 
   network_configuration {
-    subnets          = [aws_subnet.bbs_subnets[0].id]
+    subnets          = [aws_subnet.app_subnets[0].id]
     assign_public_ip = true
-    security_groups  = [aws_security_group.bbs_sg.id]
+    security_groups  = [aws_security_group.app_sg.id]
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.bbs_tg.arn
-    container_name   = "${var.owner}-${var.bbs_appname}-task"
+    target_group_arn = aws_lb_target_group.app_tg.arn
+    container_name   = "${var.owner}-${var.webapp_name}-task"
     container_port   = 7990
   }
 
   tags = {
-    Name  = "${var.owner}-ecs-service-bbs"
+    Name  = "${var.owner}-ecs-service-app"
     Owner = "${var.owner}"
   }
 }

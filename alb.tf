@@ -1,20 +1,20 @@
-resource "aws_lb" "bbs_lb" {
-  name               = "${var.owner}-bbs-lb-tf"
+resource "aws_lb" "app_lb" {
+  name               = "${var.owner}-app-lb-tf"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.bbs_sg.id]
-  subnets            = [for subnet in aws_subnet.bbs_subnets : subnet.id]
+  security_groups    = [aws_security_group.app_sg.id]
+  subnets            = [for subnet in aws_subnet.app_subnets : subnet.id]
 
   tags = {
     Owner = var.owner
   }
 }
 
-resource "aws_lb_target_group" "bbs_tg" {
-  name     = "${var.owner}-bbs-tg-tf"
-  port     = 7990
+resource "aws_lb_target_group" "app_tg" {
+  name     = "${var.owner}-app-tg-tf"
+  port     = "${var.webapp_port}"
   protocol = "HTTP"
-  vpc_id   = aws_vpc.bbs_vpc.id
+  vpc_id   = aws_vpc.app_vpc.id
   target_type = "ip"
 
   health_check {
@@ -26,13 +26,13 @@ resource "aws_lb_target_group" "bbs_tg" {
   }
 }
 
-resource "aws_lb_listener" "bbs_lb_listeners" {
-  load_balancer_arn = aws_lb.bbs_lb.arn
-  port              = 80
+resource "aws_lb_listener" "app_lb_listeners" {
+  load_balancer_arn = aws_lb.app_lb.arn
+  port              = "80"
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.bbs_tg.arn
+    target_group_arn = aws_lb_target_group.app_tg.arn
     type             = "forward"
   }
 

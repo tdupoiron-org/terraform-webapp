@@ -13,8 +13,8 @@
     },
     "portMappings": [
       {
-        "containerPort": 7990,
-        "hostPort": 7990
+        "containerPort": 8081,
+        "hostPort": 8081
       }
     ],
     "tags": [
