@@ -3,7 +3,7 @@ resource "aws_vpc" "app_vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
-    Name  = "${var.owner}-app-vpc-tf"
+    Name  = "${var.owner}-${var.webapp_name}-vpc-tf"
     Owner = var.owner
   }
 }
@@ -15,7 +15,7 @@ resource "aws_subnet" "app_subnets" {
   availability_zone = var.aws_availability_zones[count.index]
 
   tags = {
-    Name  = "${var.owner}-app-subnet-tf-${var.aws_availability_zones[count.index]}"
+    Name  = "${var.owner}-${var.webapp_name}-subnet-tf-${var.aws_availability_zones[count.index]}"
     Owner = var.owner
   }
 }
@@ -24,7 +24,7 @@ resource "aws_internet_gateway" "app_igw" {
   vpc_id = aws_vpc.app_vpc.id
 
   tags = {
-    Name  = "${var.owner}-app-igw"
+    Name  = "${var.owner}-${var.webapp_name}-igw"
     Owner = var.owner
   }
 }
@@ -38,7 +38,7 @@ resource "aws_route_table" "app_rtb" {
   }
 
   tags = {
-    Name  = "${var.owner}-app-rtb-tf"
+    Name  = "${var.owner}-${var.webapp_name}-rtb-tf"
     Owner = var.owner
   }
 }

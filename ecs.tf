@@ -1,10 +1,24 @@
 resource "aws_ecs_cluster" "ecs_cluster_app" {
-  name = "${var.owner}-ecs-cluster-app"
+  name = "${var.owner}-ecs-cluster-${var.webapp_name}"
 
   tags = {
-    Name  = "${var.owner}-ecs-cluster-app"
+    Name  = "${var.owner}-ecs-cluster-${var.webapp_name}"
     Owner = "${var.owner}"
   }
+}
+
+data "aws_iam_policy_document" "assume_role_policy" {
+  statement {
+    actions = [
+      "sts:AssumeRole",
+    ]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole" {
@@ -17,14 +31,37 @@ resource "aws_iam_role" "ecsTaskExecutionRole" {
   }
 }
 
-data "aws_iam_policy_document" "assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRole"]
+resource "aws_iam_role" "ecsTaskRole" {
+  name               = "${var.owner}-ecsTaskRole"
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 
-    principals {
-      type        = "Service"
-      identifiers = ["ecs-tasks.amazonaws.com"]
-    }
+  inline_policy {
+    name = "ecsTaskRolePolicy"
+
+    policy = jsonencode(
+      {
+        "Version" : "2012-10-17",
+        "Statement" : [
+          {
+            "Effect" : "Allow",
+            "Action" : [
+              "ssm:UpdateInstanceInformation",
+              "ssmmessages:CreateControlChannel",
+              "ssmmessages:CreateDataChannel",
+              "ssmmessages:OpenControlChannel",
+              "ssmmessages:OpenDataChannel"
+            ],
+            "Resource" : "*"
+          }
+        ]
+      }
+    )
+
+  }
+
+  tags = {
+    Name  = "${var.owner}-ecs-ecsTaskRole"
+    Owner = "${var.owner}"
   }
 }
 
@@ -34,11 +71,12 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
 }
 
 resource "aws_ecs_service" "ecs_service_app" {
-  name            = "${var.owner}-ecs-service-app"
-  cluster         = aws_ecs_cluster.ecs_cluster_app.id
-  task_definition = aws_ecs_task_definition.ecs_app_task_definition.arn
-  launch_type     = "FARGATE"
-  desired_count   = 1
+  name                   = "${var.owner}-ecs-service-${var.webapp_name}"
+  enable_execute_command = true
+  cluster                = aws_ecs_cluster.ecs_cluster_app.id
+  task_definition        = aws_ecs_task_definition.ecs_app_task_definition.arn
+  launch_type            = "FARGATE"
+  desired_count          = 1
 
   network_configuration {
     subnets          = [aws_subnet.app_subnets[0].id]
@@ -53,7 +91,7 @@ resource "aws_ecs_service" "ecs_service_app" {
   }
 
   tags = {
-    Name  = "${var.owner}-ecs-service-app"
+    Name  = "${var.owner}-ecs-service-${var.webapp_name}"
     Owner = "${var.owner}"
   }
 }

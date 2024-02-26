@@ -1,5 +1,5 @@
 resource "aws_lb" "app_lb" {
-  name               = "${var.owner}-app-lb-tf"
+  name               = "${var.owner}-${var.webapp_name}-lb-tf"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.app_sg.id]
@@ -11,10 +11,10 @@ resource "aws_lb" "app_lb" {
 }
 
 resource "aws_lb_target_group" "app_tg" {
-  name     = "${var.owner}-app-tg-tf"
-  port     = "${var.webapp_port}"
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.app_vpc.id
+  name        = "${var.owner}-${var.webapp_name}-tg-tf"
+  port        = var.webapp_port
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.app_vpc.id
   target_type = "ip"
 
   health_check {

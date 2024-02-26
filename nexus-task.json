@@ -32,6 +32,12 @@
         "key": "Owner",
         "value": "${owner}-${appname}"
       }
-    ]
+    ],
+    "exec": {
+      "config": {
+        "user": "root",
+        "enable_exec": true
+      }
+    }
   }
 ]

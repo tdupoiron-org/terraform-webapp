@@ -52,3 +52,16 @@ terraform init -backend-config="backend.conf"
 terraform plan -out="tfplan"
 terraform apply "tfplan"
 ```
+
+Once deployed you can run shell commands into the container:
+
+Example: Get the Nexus admin password
+
+```bash
+aws ecs execute-command \
+  --region eu-west-3 \
+  --cluster tdupoiron-ecs-cluster-nexus \
+  --command "cat /nexus-data/admin.password" \
+  --interactive \
+  --task <taskid>
+```

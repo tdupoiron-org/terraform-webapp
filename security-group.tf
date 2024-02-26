@@ -1,11 +1,11 @@
 # This file creates a security group that allows all inbound and outbound traffic.
 resource "aws_security_group" "app_sg" {
-  name   = "${var.owner}-app-sg-tf"
+  name   = "${var.owner}-${var.webapp_name}-sg-tf"
   vpc_id = aws_vpc.app_vpc.id
 
   ingress {
-    from_port   = "${var.webapp_port}"
-    to_port     = "${var.webapp_port}"
+    from_port   = var.webapp_port
+    to_port     = var.webapp_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -33,6 +33,6 @@ resource "aws_security_group" "app_sg" {
 
   tags = {
     Owner = var.owner
-    Name  = "${var.owner}-app-sg-tf"
+    Name  = "${var.owner}-${var.webapp_name}-sg-tf"
   }
 }
