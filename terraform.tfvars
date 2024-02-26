@@ -7,3 +7,4 @@ webapp_subdomain       = "nexus"
 webapp_name            = "nexus"
 webapp_image           = "sonatype/nexus3:latest"
 webapp_port            = 8081
+webapp_heathcheck_path = "/service/rest/v1/status"

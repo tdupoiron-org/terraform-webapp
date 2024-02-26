@@ -33,3 +33,7 @@ variable "webapp_image" {
 variable "webapp_port" {
   type = number
 }
+
+variable "webapp_heathcheck_path" {
+  type = string
+}

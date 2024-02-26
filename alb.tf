@@ -18,7 +18,7 @@ resource "aws_lb_target_group" "app_tg" {
   target_type = "ip"
 
   health_check {
-    path = "/status"
+    path = var.webapp_heathcheck_path
   }
 
   tags = {

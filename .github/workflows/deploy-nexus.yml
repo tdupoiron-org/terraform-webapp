@@ -9,6 +9,7 @@ env:
   TF_VAR_webapp_name: nexus
   TF_VAR_webapp_image: sonatype/nexus3
   TF_VAR_webapp_port: 8081
+  TF_VAR_webapp_healthcheck_path: /service/rest/v1/status
 
 jobs:
   terraform:
