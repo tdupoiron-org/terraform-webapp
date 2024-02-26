@@ -14,6 +14,9 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
 
+    outputs:
+      terraform_output: ${{ steps.deploy.outputs.terraform_output }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -42,5 +45,5 @@ jobs:
     steps:
       - name: Summary
         run: |
-          echo "Terraform output: ${{ needs.terraform.steps.deploy.terraform_output }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Terraform output: ${{ needs.terraform.terraform_output }}" >> "$GITHUB_STEP_SUMMARY"
           echo "Application URL: http://${{ env.TF_VAR_webapp_subdomain }}.${{ env.domain }}" >> "$GITHUB_STEP_SUMMARY"
