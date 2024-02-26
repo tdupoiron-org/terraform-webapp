@@ -26,7 +26,6 @@ jobs:
 
       - name: Terraform apply
         id: deploy
-        working-directory: aws
         run: | 
           terraform init -backend-config=backend.conf
           terraform plan -out=tfplan

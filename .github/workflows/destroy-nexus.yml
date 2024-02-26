@@ -1,4 +1,4 @@
-name: Destroy Nexus AWS
+name: Destroy Nexus
 
 on:
   workflow_dispatch:
@@ -17,7 +17,6 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform apply
-        working-directory: aws
         run: | 
           terraform init -backend-config=backend.conf
           terraform destroy -auto-approve
