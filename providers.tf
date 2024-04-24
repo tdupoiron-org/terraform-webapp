@@ -10,7 +10,7 @@ terraform {
   backend "s3" {}
 }
 
-provider "aws" {
+provider "aw" {
   region = var.aws_region
 }
 
